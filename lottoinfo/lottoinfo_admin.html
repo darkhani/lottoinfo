@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery 관리자 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form action="lottery_insert.php" method="post">
+        <h2>Lottery 데이터 입력</h2>
+        <label for="round">Round:</label>
+        <input type="text" name="round" required>
+
+        <label for="fdate">Fdate:</label>
+        <input type="text" name="fdate" required>
+        
+        <label for="number1">1번째숫자</label>
+        <input type="text" name="number1" required>
+
+        <label for="number2">2번째숫자</label>
+        <input type="text" name="number2" required>
+
+        <label for="number3">3번째숫자</label>
+        <input type="text" name="number3" required>
+
+        <label for="number4">4번째숫자</label>
+        <input type="text" name="number4" required>
+
+        <label for="number5">5번째숫자</label>
+        <input type="text" name="number5" required>
+
+        <label for="number6">6번째숫자</label>
+        <input type="text" name="number6" required>
+
+        <label for="bonus">보너스숫자</label>
+        <input type="text" name="bonus" required>
+
+        <!-- 나머지 입력 필드들을 추가 -->
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
