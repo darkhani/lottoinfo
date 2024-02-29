@@ -40,3 +40,13 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+/* Style the anchor tag to look like a button */
+.button-link {
+    padding: 1px 6px;
+    border: 1px outset #ccc;
+    border-radius: 3px;
+    color: #333;
+    background-color: #f9f9f9;
+    text-decoration: none;
+  }

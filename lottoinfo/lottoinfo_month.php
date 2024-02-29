@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style3.css">
-
     <style>
+       
 
         table {
             width: 100%;
@@ -37,7 +37,7 @@
         }
 
         .pagination {
-            margin-top: 10px;
+        margin-top: 10px;
         }
 
         .pagination a {
@@ -58,7 +58,6 @@
 <body>
     <div>
     <img src="myhitlogo.jpg" width="200" alt="Han In Taek"><br>
-    <p style="text-align:center;"><h3>역대당첨번호</h3></p>
 <?php
 $conn = mysqli_connect("localhost","darkhani","a4353488a","darkhani");
 
@@ -67,27 +66,28 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// // Define the number of records per page
-$recordsPerPage = 20;
-
-if (isset($_GET['page']) && is_numeric($_GET['page'])) {
-    $currentPage = $_GET['page'];
-} else {
-    $currentPage = 1;
-}
-
-// Calculate the offset for the SQL query
-$offset = ($currentPage - 1) * $recordsPerPage;
-
 // Select data from the database
 // $sql = "SELECT * FROM lottery LIMIT $offset, $recordsPerPage";
-$sql = "SELECT * FROM lottery ORDER BY fdate DESC LIMIT $offset, $recordsPerPage";
+// $sql = "SELECT fdate, number1, number2, number3, number4, number5, number6, bonus FROM lottery WHERE fdate LIKE \"%-01-%\" ORDER BY fdate DESC";
+
+// Search term
+//$searchTerm = "-01-"; // Replace with your actual search term
+
+// And this is how you can use this function assuming the URL is, http://dummy.com/?technology=jquery&blog=jquerybyexample:
+
+// var tech = GetURLParameter('technology');
+// var blog = GetURLParameter('blog');`
+$month = $_GET['month'];
+// var month = GetURLParameter('month');
+
+// SQL query with LIKE condition
+$sql = "SELECT fdate, number1, number2, number3, number4, number5, number6, bonus FROM lottery  WHERE MONTH(fdate) = $month ORDER BY fdate DESC";
+
 // $sql = "SELECT * FROM lottery;";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     echo "<table border='1'>
             <tr>
-                <th>Round</th>
                 <th>Date</th>
                 <th>No1</th>
                 <th>No2</th>
@@ -100,9 +100,8 @@ if ($result->num_rows > 0) {
 
     // Output data of each row
     while ($row = $result->fetch_assoc()) {
-
-        //=== 1번째 숫자 색깔 정의
-        if ($row['number1'] < 10) {
+         //=== 1번째 숫자 색깔 정의
+         if ($row['number1'] < 10) {
             $num1Class = 'ball_645 lrg ball1';
         }
 
@@ -249,7 +248,6 @@ if ($result->num_rows > 0) {
         }
 
         echo "<tr>
-                <td>{$row['round']}</td>
                 <td>{$row['fdate']}</td>
                 <td><span class='$num1Class'>{$row['number1']}</span></td> 
                 <td><span class='$num2Class'>{$row['number2']}</span></td> 
@@ -259,64 +257,27 @@ if ($result->num_rows > 0) {
                 <td><span class='$num6Class'>{$row['number6']}</span></td> 
                 <td><span class='$bonusClass'>{$row['bonus']}</span></td>
               </tr>";
-              
     }
     echo "<tr>";
     echo "<td colspan='9'>";
-    // Create pagination links
-    $totalRecordsSql = "SELECT COUNT(*) AS total_records FROM lottery";
-    $totalRecordsResult = $conn->query($totalRecordsSql);
-    $totalRecords = $totalRecordsResult->fetch_assoc()['total_records'];
-    $totalPages = ceil($totalRecords / $recordsPerPage);
-
-    $range = 2;  // 현재 페이지 주변에 표시할 페이지 범위
-
-    if ($currentPage > 1) {
-        echo "<a href='lottoInfo.php?page=1'>1</a>";
-        if ($currentPage > ($range + 1)) {
-            echo "<span>...</span>";
-        }
-    }
-
-   // echo "<div class='pagination'>";
-    for ($i = max(2, $currentPage - $range); $i <= min($currentPage + $range, $totalPages - 1); $i++) {
-    //for ($i = 1; $i <= $totalPages; $i++) {
-        echo "<a href='lottoInfo.php?page=$i' style='padding:4px; margin: 0 4px; border: 1px solid #ddd; text-decoration: none; color: #007bff;'>$i</a>";
-    }
-
-    if ($currentPage < $totalPages) {
-        if ($currentPage < ($totalPages - $range)) {
-            echo "<span>...</span>";
-        }
-        echo "<a href='lottoInfo.php?page=$totalPages'>$totalPages</a>";
-    }
-    
-    echo "</td>";
-    echo "</tr>";
-    echo "<tr>";
-    echo "<td colspan='9'>";
-    $countRankingNumberSql = "SELECT number, COUNT(number) AS occurrences FROM (  SELECT number1 AS number FROM lottery  UNION ALL  SELECT number2 FROM lottery  UNION ALL  SELECT number3 FROM lottery  UNION ALL  SELECT number4 FROM lottery  UNION ALL  SELECT number5 FROM lottery  UNION ALL  SELECT number6 FROM lottery) AS all_numbers GROUP BY number ORDER BY occurrences DESC;";
-    $resultArr = $conn->query($countRankingNumberSql);
-    $medalCount=0; //1~5위만 선정한다.
-    echo "많이 나와요 : ";
-
-    for ($j = 0; $j <= 45; $j++) {
-        
-        $countNumber = $resultArr->fetch_assoc()['number'];
-        if ($medalCount < 5 ) {
-            echo strval($countNumber).", "; 
-        } else if ($medalCount == 5 ) {
-            echo strval($countNumber); 
-        }
-
-        $medalCount = $medalCount + 1;
-    }
+    echo "<a href='lottoInfo.php'>전체</a>";
+    echo "<a href='lottoinfo_month.php?month=1'> 1월 </a>";
+    echo "<a href='lottoinfo_month.php?month=2'> 2월 </a>";
+    echo "<a href='lottoinfo_month.php?month=3'> 3월 </a>";
+    echo "<a href='lottoinfo_month.php?month=4'> 4월 </a>";
+    echo "<a href='lottoinfo_month.php?month=5'> 5월 </a>";
+    echo "<a href='lottoinfo_month.php?month=6'> 6월 </a>";
+    echo "<a href='lottoinfo_month.php?month=7'> 7월 </a>";
+    echo "<a href='lottoinfo_month.php?month=8'> 8월 </a>";
+    echo "<a href='lottoinfo_month.php?month=9'> 9월 </a>";
+    echo "<a href='lottoinfo_month.php?month=10'> 10월 </a>";
+    echo "<a href='lottoinfo_month.php?month=11'> 11월 </a>";
+    echo "<a href='lottoinfo_month.php?month=12'> 12월 </a>";
     echo "</td>";
     echo "</tr>";
     echo "<tr>";
     echo "<td colspan='9'>";
     echo "<a href='index.html'>홈으로</a>";
-    echo "<a href='lottoinfo_month.php?month=1'> 1월 </a>";
     echo "</td>";
     echo "</tr>";
     echo "</table>";

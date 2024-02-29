@@ -32,5 +32,11 @@ document.getElementById("drawButton").addEventListener("click", function () {
     }
 
     // Display the result
-    resultElement.innerHTML = `예상번호: ${uniqueLottoNumbers.join(", ")}`;
+    resultElement.innerHTML = `예상번호: ${uniqueLottoNumbers.join(", ")}`+'<br><br> tegine는 바로 당신이 10억의 주인공이 되길 바래요 🌈';
 });
+
+document.getElementById("linkButton").addEventListener("click", function () {
+    var href = "https://www.tegine.com/lottoinfo/index.html";
+    window.location = href;
+});
+
