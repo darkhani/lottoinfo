@@ -1,3 +1,7 @@
+<!-- 만든이 : 한인택 [테기네닷컴]-->
+<!-- 최근작업 : 2024-03-01 : 대한독립만세 -->
+<!--   -->
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -57,8 +61,15 @@
 </head>
 <body>
     <div>
-    <img src="myhitlogo.jpg" width="200" alt="Han In Taek"><br>
-    <p style="text-align:center;"><h3>역대당첨번호</h3></p>
+        <div class="align-items-center">
+            <img src="myhitlogo.jpg" width="200" alt="Han In Taek"><br>
+            <div ><h4>검색 : </h4>
+                <form action="">
+                    <input type="number" ondrop="return false;" onpaste="return false;" />
+                    <button type="submit" value="Submit">Click</button>
+                </form>
+            </div>
+        </div>
 <?php
 $conn = mysqli_connect("localhost","darkhani","a4353488a","darkhani");
 
@@ -85,7 +96,7 @@ $sql = "SELECT * FROM lottery ORDER BY fdate DESC LIMIT $offset, $recordsPerPage
 // $sql = "SELECT * FROM lottery;";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
-    echo "<table border='1'>
+    echo "<table border='0'>
             <tr>
                 <th>Round</th>
                 <th>Date</th>

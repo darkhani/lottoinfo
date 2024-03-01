@@ -32,7 +32,7 @@ document.getElementById("drawButton").addEventListener("click", function () {
     }
 
     // Display the result
-    resultElement.innerHTML = `예상번호: ${uniqueLottoNumbers.join(", ")}`+'<br><br> tegine는 바로 당신이 10억의 주인공이 되길 바래요 🌈';
+    resultElement.innerHTML = `${uniqueLottoNumbers.join(", ")}` + `<br> 10억의 행운을 가지세요~^^`;
 });
 
 document.getElementById("linkButton").addEventListener("click", function () {

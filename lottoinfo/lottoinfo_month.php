@@ -86,7 +86,7 @@ $sql = "SELECT fdate, number1, number2, number3, number4, number5, number6, bonu
 // $sql = "SELECT * FROM lottery;";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
-    echo "<table border='1'>
+    echo "<table border='0'>
             <tr>
                 <th>Date</th>
                 <th>No1</th>
