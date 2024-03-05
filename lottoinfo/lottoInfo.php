@@ -1,6 +1,6 @@
 <!-- 만든이 : 한인택 [테기네닷컴]-->
 <!-- 최근작업 : 2024-03-01 : 대한독립만세 -->
-<!--   -->
+<!-- REAL -->
 
 <html>
 <head>
@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style3.css">
-
     <style>
 
         table {
@@ -58,18 +57,71 @@
         }
 
     </style>
+    </script>
 </head>
+
 <body>
     <div>
         <div class="align-items-center">
             <img src="myhitlogo.jpg" width="200" alt="Han In Taek"><br>
-            <div ><h4>검색 : </h4>
-                <form action="">
-                    <input type="number" ondrop="return false;" onpaste="return false;" />
-                    <button type="submit" value="Submit">Click</button>
-                </form>
+            <div>
+                <!-- <form action=""> -->
+                <input type="number" id="searchNum" size="50" maxlength="2" size=45/>
+                <button type="submit" value="Submit" id="searchButton">검색</button>
             </div>
-        </div>
+
+            <script>
+    // 버튼 요소를 가져옵니다.
+    var searchNum = document.getElementById("searchNum");
+
+    // 버튼을 클릭할 때 실행될 함수를 정의합니다.
+    searchButton.addEventListener("click", function() {
+        if (searchNum.value < 1) {
+            alert("1~45사이의 수를 입력해 주세요.");
+            var input = document.getElementById("searchNum");
+            input.value = "1";
+            return;
+        }
+        if (searchNum.value > 45) {
+            alert("1~45사이의 수를 입력해 주세요.");
+            var input = document.getElementById("searchNum");
+            input.value = "1";
+            return;
+        }
+
+        alert(searchNum.value+"를 검색합니다.");
+        
+        // 현재 날짜를 가져옵니다.
+        var currentDate = new Date();
+
+        // 원하는 형식으로 날짜를 출력합니다.
+        // 예: yyyy년 MM월 dd일
+        // var year = currentDate.getFullYear();
+        var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+        // var day = ('0' + currentDate.getDate()).slice(-2);
+        // var formattedDate = year + '년 ' + month + '월 ' + day + '일';
+
+        // 혹은 원하는 형식에 따라 다르게 표시할 수 있습니다.
+        // 예: yyyy-MM-dd, MM/dd/yyyy 등
+
+        // 결과 출력
+        // console.log("현재 날짜:", formattedDate); // with chatgpt3.5
+
+        // 현재 URL을 가져옵니다.
+        var currentUrl = "https://www.tegine.com/lottoinfo/lottoinfo_search.php";
+
+        // GET 매개변수를 추가합니다.
+        var newUrl = currentUrl + "?searchNum="+ searchNum.value+"&month="+month;
+
+        // 새로운 URL로 페이지를 다시로드합니다.
+        window.location.href = newUrl;
+
+
+    });
+</script>
+
+    </div>
+
 <?php
 $conn = mysqli_connect("localhost","darkhani","a4353488a","darkhani");
 
@@ -79,7 +131,7 @@ if ($conn->connect_error) {
 }
 
 // // Define the number of records per page
-$recordsPerPage = 20;
+$recordsPerPage = 30;
 
 if (isset($_GET['page']) && is_numeric($_GET['page'])) {
     $currentPage = $_GET['page'];

@@ -61,7 +61,7 @@
 </head>
 <body>
     <div>
-    <img src="myhitlogo.jpg" width="200" alt="Han In Taek"><br>
+    <a href="index.html"><img src="myhitlogo.jpg" width="200" alt="Han In Taek"></a><br>
 <?php
 $conn = mysqli_connect("localhost","darkhani","a4353488a","darkhani");
 
@@ -301,7 +301,7 @@ if ($result->num_rows > 0) {
     echo "</tr>";
     echo "<tr>";
     echo "<td colspan='9'>";
-    echo "<a href='index.html'>홈으로</a>";
+    echo "<a href='https://www.tegine.com/lottoinfo/lottoInfo.php?page=1'>전체보기</a>";
     echo "</td>";
     echo "</tr>";
     echo "</table>";
