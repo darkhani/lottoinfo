@@ -190,149 +190,149 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
         //=== 1번째 숫자 색깔 정의
-        if ($row['number1'] < 10) {
+        if ($row['number1'] <= 10) {
             $num1Class = 'ball_645 lrg ball1';
         }
 
-        if ($row['number1'] >= 10 && $row['number1'] < 20) {
+        if ($row['number1'] > 10 && $row['number1'] <= 20) {
             $num1Class = 'ball_645 lrg ball2';
         }
 
-        if ($row['number1'] >= 20 && $row['number1'] < 30) {
+        if ($row['number1'] > 20 && $row['number1'] <= 30) {
             $num1Class = 'ball_645 lrg ball3';
         }
 
-        if ($row['number1'] >= 30 && $row['number1'] < 40) {
+        if ($row['number1'] > 30 && $row['number1'] <= 40) {
             $num1Class = 'ball_645 lrg ball4';
         }
         
-        if ($row['number1'] >= 40 && $row['number1'] < 46) {
+        if ($row['number1'] > 40 && $row['number1'] < 46) {
             $num1Class = 'ball_645 lrg ball5';
         }
 
         //=== 2번째 숫자 색깔 정의
-        if ($row['number2'] < 10) {
+        if ($row['number2'] <= 10) {
             $num2Class = 'ball_645 lrg ball1';
         }
 
-        if ($row['number2'] >= 10 && $row['number2'] < 20) {
+        if ($row['number2'] > 10 && $row['number2'] <= 20) {
             $num2Class = 'ball_645 lrg ball2';
         }
 
-        if ($row['number2'] >= 20 && $row['number2'] < 30) {
+        if ($row['number2'] > 20 && $row['number2'] <= 30) {
             $num2Class = 'ball_645 lrg ball3';
         }
 
-        if ($row['number2'] >= 30 && $row['number2'] < 40) {
+        if ($row['number2'] > 30 && $row['number2'] <= 40) {
             $num2Class = 'ball_645 lrg ball4';
         }
         
-        if ($row['number2'] >= 40 && $row['number2'] < 46) {
+        if ($row['number2'] > 40 && $row['number2'] < 46) {
             $num2Class = 'ball_645 lrg ball5';
         }
 
         //=== 3번째 숫자 색깔 정의
-        if ($row['number3'] < 10) {
+        if ($row['number3'] <= 10) {
             $num3Class = 'ball_645 lrg ball1';
         }
 
-        if ($row['number3'] >= 10 && $row['number3'] < 20) {
+        if ($row['number3'] > 10 && $row['number3'] <= 20) {
             $num3Class = 'ball_645 lrg ball2';
         }
 
-        if ($row['number3'] >= 20 && $row['number3'] < 30) {
+        if ($row['number3'] > 20 && $row['number3'] <= 30) {
             $num3Class = 'ball_645 lrg ball3';
         }
 
-        if ($row['number3'] >= 30 && $row['number3'] < 40) {
+        if ($row['number3'] > 30 && $row['number3'] <= 40) {
             $num3Class = 'ball_645 lrg ball4';
         }
         
-        if ($row['number3'] >= 40 && $row['number3'] < 46) {
+        if ($row['number3'] > 40 && $row['number3'] < 46) {
             $num3Class = 'ball_645 lrg ball5';
         }
 
          //=== 4번째 숫자 색깔 정의
-         if ($row['number4'] < 10) {
+         if ($row['number4'] <= 10) {
             $num4Class = 'ball_645 lrg ball1';
         }
 
-        if ($row['number4'] >= 10 && $row['number4'] < 20) {
+        if ($row['number4'] > 10 && $row['number4'] <= 20) {
             $num4Class = 'ball_645 lrg ball2';
         }
 
-        if ($row['number4'] >= 20 && $row['number4'] < 30) {
+        if ($row['number4'] > 20 && $row['number4'] <= 30) {
             $num4Class = 'ball_645 lrg ball3';
         }
 
-        if ($row['number4'] >= 30 && $row['number4'] < 40) {
+        if ($row['number4'] > 30 && $row['number4'] <= 40) {
             $num4Class = 'ball_645 lrg ball4';
         }
         
-        if ($row['number4'] >= 40 && $row['number4'] < 46) {
+        if ($row['number4'] > 40 && $row['number4'] < 46) {
             $num4Class = 'ball_645 lrg ball5';
         }
 
          //=== 5번째 숫자 색깔 정의
-         if ($row['number5'] < 10) {
+         if ($row['number5'] <= 10) {
             $num5Class = 'ball_645 lrg ball1';
         }
 
-        if ($row['number5'] >= 10 && $row['number5'] < 20) {
+        if ($row['number5'] > 10 && $row['number5'] <= 20) {
             $num5Class = 'ball_645 lrg ball2';
         }
 
-        if ($row['number5'] >= 20 && $row['number5'] < 30) {
+        if ($row['number5'] > 20 && $row['number5'] <= 30) {
             $num5Class = 'ball_645 lrg ball3';
         }
 
-        if ($row['number5'] >= 30 && $row['number5'] < 40) {
+        if ($row['number5'] > 30 && $row['number5'] <= 40) {
             $num5Class = 'ball_645 lrg ball4';
         }
         
-        if ($row['number5'] >= 40 && $row['number5'] < 46) {
+        if ($row['number5'] > 40 && $row['number5'] < 46) {
             $num5Class = 'ball_645 lrg ball5';
         }
 
         //=== 6번째 숫자 색깔 정의
-        if ($row['number6'] < 10) {
+        if ($row['number6'] <= 10) {
             $num6Class = 'ball_645 lrg ball1';
         }
 
-        if ($row['number6'] >= 10 && $row['number6'] < 20) {
+        if ($row['number6'] > 10 && $row['number6'] <= 20) {
             $num6Class = 'ball_645 lrg ball2';
         }
 
-        if ($row['number6'] >= 20 && $row['number6'] < 30) {
+        if ($row['number6'] > 20 && $row['number6'] <= 30) {
             $num6Class = 'ball_645 lrg ball3';
         }
 
-        if ($row['number6'] >= 30 && $row['number6'] < 40) {
+        if ($row['number6'] > 30 && $row['number6'] <= 40) {
             $num6Class = 'ball_645 lrg ball4';
         }
         
-        if ($row['number6'] >= 40 && $row['number6'] < 46) {
+        if ($row['number6'] > 40 && $row['number6'] < 46) {
             $num6Class = 'ball_645 lrg ball5';
         }
 
         //=== 보너스 숫자 색깔 정의
-        if ($row['bonus'] < 10) {
+        if ($row['bonus'] <= 10) {
             $bonusClass = 'ball_645 lrg ball1';
         }
 
-        if ($row['bonus'] >= 10 && $row['bonus'] < 20) {
+        if ($row['bonus'] > 10 && $row['bonus'] <= 20) {
             $bonusClass = 'ball_645 lrg ball2';
         }
 
-        if ($row['bonus'] >= 20 && $row['bonus'] < 30) {
+        if ($row['bonus'] > 20 && $row['bonus'] <= 30) {
             $bonusClass = 'ball_645 lrg ball3';
         }
 
-        if ($row['bonus'] >= 30 && $row['bonus'] < 40) {
+        if ($row['bonus'] > 30 && $row['bonus'] <= 40) {
             $bonusClass = 'ball_645 lrg ball4';
         }
         
-        if ($row['bonus'] >= 40 && $row['bonus'] < 46) {
+        if ($row['bonus'] > 40 && $row['bonus'] <= 46) {
             $bonusClass = 'ball_645 lrg ball5';
         }
 
