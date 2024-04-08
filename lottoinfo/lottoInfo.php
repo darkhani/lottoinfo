@@ -68,8 +68,25 @@
                 <!-- <form action=""> -->
                 <input type="number" id="searchNum" size="50" maxlength="2" size=45/>
                 <button type="submit" value="Submit" id="searchButton">검색</button>
-            </div>
 
+                <label for="month">월 선택:</label>
+    <select id="month" name="month" onchange="handleMonthChange()">
+        <option value="1">1월</option>
+        <option value="2">2월</option>
+        <option value="3">3월</option>
+        <option value="4">4월</option>
+        <option value="5">5월</option>
+        <option value="6">6월</option>
+        <option value="7">7월</option>
+        <option value="8">8월</option>
+        <option value="9">9월</option>
+        <option value="10">10월</option>
+        <option value="11">11월</option>
+        <option value="12">12월</option>
+    </select>
+
+            </div>
+            
             <script>
     // 버튼 요소를 가져옵니다.
     var searchNum = document.getElementById("searchNum");
@@ -118,6 +135,14 @@
 
 
     });
+
+    function handleMonthChange() {
+        var selectedMonth = document.getElementById("month").value;
+        var currentUrl = "https://www.tegine.com/lottoinfo/lottoinfo_search.php";
+        var newUrl = currentUrl +"?month="+selectedMonth;
+        window.location.href = newUrl;
+    }
+
 </script>
 
     </div>
