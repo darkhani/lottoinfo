@@ -62,6 +62,64 @@
 <body>
     <div>
     <a href="index.html"><img src="myhitlogo.jpg" width="200" alt="Han In Taek"></a><br>
+    <label for="month">월 선택:</label>
+    <select id="month" name="month" onchange="handleMonthChange()">
+        <option value="1">1월</option>
+        <option value="2">2월</option>
+        <option value="3">3월</option>
+        <option value="4">4월</option>
+        <option value="5">5월</option>
+        <option value="6">6월</option>
+        <option value="7">7월</option>
+        <option value="8">8월</option>
+        <option value="9">9월</option>
+        <option value="10">10월</option>
+        <option value="11">11월</option>
+        <option value="12">12월</option>
+    </select>
+    </div>
+    <script>
+        function handleMonthChange() {
+        var selectedMonth = document.getElementById("month").value;
+        var currentUrl = "https://www.tegine.com/lottoinfo/lottoinfo_search.php";
+        var newUrl = currentUrl +"?month="+selectedMonth;
+        window.location.href = newUrl;
+    }
+
+    // JavaScript로 11월을 선택하는 함수
+    function selectedMonthFirst() {
+        var select = document.getElementById("month");
+        var queryString = window.location.search;
+
+// 쿼리 문자열이 있는지 확인
+if (queryString) {
+    // '?' 문자를 제거하고 '&' 문자로 분할하여 배열 생성
+    var queryParams = queryString.substring(1).split('&');
+
+    // 각각의 파라미터에 대해 반복
+    queryParams.forEach(function(param) {
+        // '=' 문자를 기준으로 파라미터 이름과 값 분리
+        var parts = param.split('=');
+        var paramName = decodeURIComponent(parts[0]);
+        var paramValue = decodeURIComponent(parts[1]);
+
+        // 만약 paramName이 'month'인 경우에 해당하는 값을 얻음
+        if (paramName === 'month') {
+            // 추출된 month 값 사용
+            // console.log("Month 값: " + paramValue);
+            select.value = paramValue;
+        }
+    });
+}
+    }
+
+    // 페이지 로드 시 11월 선택
+    window.onload = function() {
+        selectedMonthFirst();
+    }
+
+    </script>
+    <div>
 <?php
 $conn = mysqli_connect("localhost","darkhani","a4353488a","darkhani");
 
@@ -283,6 +341,7 @@ if ($result->num_rows > 0) {
             $bonusClass = 'ball_645 lrg ball5';
         }
 
+        echo "  ";
         echo "<tr>
                 <td>{$row['fdate']}</td>
                 <td><span class='$num1Class'>{$row['number1']}</span></td> 
