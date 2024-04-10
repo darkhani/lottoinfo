@@ -372,6 +372,45 @@ if ($result->num_rows > 0) {
 // Close connection
 $conn->close();
 ?>
+
+<div id='caulyDisplay'>
+   <script src='http://image.cauly.co.kr/websdk/common/lasted/ads.min.js'></script>
+   <script>
+     // Advertiser Id 를 저장하는 메소드
+    function saveAdvertiserId(adid) {
+      try {
+        if (!!window.localStorage) {
+          localStorage.removeItem("caulyad_adid");
+          localStorage.setItem("caulyad_adid", adid);
+          return true;
+        } else if (navigator.cookieEnabled) {
+          var date = new Date();
+          date.setTime(date.getTime() + (365*24*60*60*1000));
+          document.cookie = "caulyad_adid=" + adid + ";path=/;expire=" + date.toUTCString() + ";domain=" + location.hostname + ";";
+          return true;
+        } else {
+          return false;
+        }
+      } catch(e) {
+        return false;
+      }
+    }
+
+    // 매체사에서 추출한 Advertiser Id 를 저장
+    saveAdvertiserId("ADID 정보");
+
+    // Cauly SDK 초기화
+    var cauly_ads = new CaulyAds({
+       app_code: 'UK7q3Bo4',
+       placement: 1,
+       displayid: 'caulyDisplay',
+       passback: function () { },
+       success: function () { }
+     });
+   </script>
+</div>	
+
 </div>
+          
 </body>
 </html>
