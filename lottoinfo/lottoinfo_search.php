@@ -61,7 +61,7 @@
 </head>
 <body>
     <div>
-    <a href="https://www.tegine.com/lottoinfo/lottoInfo.php?page=1"><img src="myhitlogo.jpg" width="200" alt="Han In Taek"></a><br>
+    <a href="https://www.tegine.com/lottoinfo/lottoinfo.php?page=1"><img src="myhitlogo.jpg" width="200" alt="Han In Taek"></a><br>
     <label for="month">선택:</label>
     <select id="month" name="month" onchange="handleMonthChange()">
         <option value="1">1월</option>
@@ -361,7 +361,7 @@ if ($result->num_rows > 0) {
     echo "</tr>";
     echo "<tr>";
     echo "<td colspan='9'>";
-    // echo "<a href='https://www.tegine.com/lottoinfo/lottoInfo.php?page=1'>전체보기</a>";
+    // echo "<a href='https://www.tegine.com/lottoinfo/lottoinfo.php?page=1'>전체보기</a>";
     echo "</td>";
     echo "</tr>";
     echo "</table>";
