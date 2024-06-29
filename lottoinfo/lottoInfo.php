@@ -18,6 +18,7 @@
         }
         
         .underlogomenu{
+            padding: 10px; /* padding 설정 */
             display: inline-block; /* div를 인라인 블록 요소로 변경하여 한 줄에 표시합니다. */
             margin-right: 10px; /* 각 div 요소 사이의 간격을 조절합니다. */
         }
@@ -98,10 +99,10 @@
                         die("Connection failed: " . $conn->connect_error);
                     }
 
-                    $countRankingNumberSql = "SELECT number, COUNT(number) AS occurrences FROM (  SELECT number1 AS number FROM lottery  UNION ALL  SELECT number2 FROM lottery  UNION ALL  SELECT number3 FROM lottery  UNION ALL  SELECT number4 FROM lottery  UNION ALL  SELECT number5 FROM lottery  UNION ALL  SELECT number6 FROM lottery) AS all_numbers GROUP BY number ORDER BY occurrences DESC;";
+                    $countRankingNumberSql = "SELECT number, COUNT(number) AS occurrences FROM (  SELECT number1 AS number FROM lottery  UNION ALL  SELECT number2 FROM lottery  UNION ALL  SELECT number3 FROM lottery  UNION ALL  SELECT number4 FROM lottery  UNION ALL  SELECT number5 FROM lottery  UNION ALL  SELECT number6 FROM lottery) AS all_numbers GROUP BY number ORDER BY occurrences DESC LIMIT 6;";
                     $resultArr = $conn->query($countRankingNumberSql);
-                    $medalCount=0; //1~5위만 선정한다.
-                    echo "역대최다당첨 번호6개는 ?? ";
+                    $medalCount=0; //1~6위만 선정한다.
+                    echo "<div class='underlogomenu'> 최다당첨번호6개 : ";
 
                     for ($j = 0; $j <= 45; $j++) {
                         $countNumber = $resultArr->fetch_assoc()['number'];
@@ -133,7 +134,7 @@
                         
                         $medalCount = $medalCount + 1;
                     }
-
+                    echo "</div>";
                 ?>
             </div>
         </div>
@@ -145,6 +146,7 @@
 
                 <label for="month">선택:</label>
                 <select id="month" name="month" onchange="handleMonthChange()">
+                    <option value="0">전체</option>
                     <option value="1">1월</option>
                     <option value="2">2월</option>
                     <option value="3">3월</option>
@@ -258,7 +260,13 @@
     function handleMonthChange() {
         var selectedMonth = document.getElementById("month").value;
         var currentUrl = "https://www.tegine.com/lottoinfo/lottoinfo_search.php";
-        var newUrl = currentUrl +"?month="+selectedMonth;
+        var newUrl = "";
+        if (selectedMonth == 0) {
+            newUrl = "https://www.tegine.com/lottoinfo/lottoinfo.php" +"?page=1";
+        } else {
+            newUrl = currentUrl +"?month="+selectedMonth;
+        }
+        
         window.location.href = newUrl;
     }
 
