@@ -46,3 +46,13 @@
     border-left: 0;
     border-right: 0;
 }
+
+.underlogomenu select, .underlogomenu input[type="text"], .underlogomenu input[type="submit"] {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.underlogomenu label {
+    display: inline-block;
+    margin-right: 5px;
+}

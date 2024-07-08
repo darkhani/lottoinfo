@@ -77,25 +77,79 @@
     <a href="https://www.tegine.com/lottoinfo/lottoinfo.php?page=1"><img src="myhitlogo.jpg" width="200" alt="Han In Taek"></a><br>
          <div class="align-items-center">
             <div class="underlogomenu">
-                <label for="month">선택:</label>
-                <select id="month" name="month" onchange="handleMonthChange()">
-                    <option value="0">전체</option>    
-                    <option value="1">1월</option>
-                    <option value="2">2월</option>
-                    <option value="3">3월</option>
-                    <option value="4">4월</option>
-                    <option value="5">5월</option>
-                    <option value="6">6월</option>
-                    <option value="7">7월</option>
-                    <option value="8">8월</option>
-                    <option value="9">9월</option>
-                    <option value="10">10월</option>
-                    <option value="11">11월</option>
-                    <option value="12">12월</option>
-                </select>
+                <form id="lottoForm" method="GET" action="lottoinfo_search.php">
+                    <label for="month">선택:</label>
+                    <select id="month" name="month">
+                        <option value="0">전체</option>
+                        <option value="1">1월</option>
+                        <option value="2">2월</option>
+                        <option value="3">3월</option>
+                        <option value="4">4월</option>
+                        <option value="5">5월</option>
+                        <option value="6">6월</option>
+                        <option value="7">7월</option>
+                        <option value="8">8월</option>
+                        <option value="9">9월</option>
+                        <option value="10">10월</option>
+                        <option value="11">11월</option>
+                        <option value="12">12월</option>
+                    </select>
+                    <label for="day">일자:</label>
+                    <input type="text" id="day" name="day" maxlength="2" oninput="validateDay()" placeholder="DD" style="width: 50px;">
+                    <input type="submit" value="검색">
+                </form>
             </div>
+        </div>
+    </div>
 
-            <?php 
+<script>
+        function validateDay() {
+            var dayInput = document.getElementById('day');
+            var day = dayInput.value;
+
+            // 숫자가 아닌 문자는 제거
+            day = day.replace(/\D/g, '');
+ 	    // 일자가 1에서 31 사이인지 확인
+            if (day > 31) {
+                day = '31';
+            }
+
+            dayInput.value = day;
+        }
+
+        // JavaScript로 URL에서 쿼리 파라미터를 읽어 선택된 월을 설정하는 함수
+        function selectedMonthFirst() {
+            var select = document.getElementById("month");
+            var queryString = window.location.search;
+
+            // 쿼리 문자열이 있는지 확인
+            if (queryString) {
+                // '?' 문자를 제거하고 '&' 문자로 분할하여 배열 생성
+                var queryParams = queryString.substring(1).split('&');
+
+                // 각각의 파라미터에 대해 반복
+                queryParams.forEach(function(param) {
+                    // '=' 문자를 기준으로 파라미터 이름과 값 분리
+                    var parts = param.split('=');
+                    var paramName = decodeURIComponent(parts[0]);
+                    var paramValue = decodeURIComponent(parts[1]);
+
+                    // 만약 paramName이 'month'인 경우에 해당하는 값을 얻음
+                    if (paramName === 'month') {
+                        // 추출된 month 값 사용
+                        select.value = paramValue;
+                    }
+                });
+            }
+        }
+  // 페이지 로드 시 선택된 월 설정
+        window.onload = function() {
+            selectedMonthFirst();
+        }
+    </script>
+
+    <div>
+        <?php 
         $conn = mysqli_connect("localhost","darkhani","a4353488a","darkhani");
 
         // Check connection
@@ -103,51 +157,54 @@
             die("Connection failed: " . $conn->connect_error);
         }
         
-        $month = $_GET['month'];
-        $searchNum = $_GET['searchNum'];
+       $month = isset($_GET['month']) ? intval($_GET['month']) : 0;
+       $day = isset($_GET['day']) ? intval($_GET['day']) : 0;
+       $searchNum = isset($_GET['searchNum']) ? intval($_GET['searchNum']) : '';
 
         $sqlCountB = "SELECT number AS num, COUNT(*) AS counthoi 
-                    FROM ( SELECT number1 AS number FROM lottery WHERE MONTH(fdate) = $month UNION ALL SELECT number2 AS number FROM lottery WHERE MONTH(fdate) = $month UNION ALL SELECT number3 AS number FROM lottery WHERE MONTH(fdate) = $month UNION ALL SELECT number4 AS number FROM lottery WHERE MONTH(fdate) = $month UNION ALL SELECT number5 AS number FROM lottery WHERE MONTH(fdate) = $month UNION ALL SELECT number6 AS number FROM lottery WHERE MONTH(fdate) = $month UNION ALL SELECT bonus AS number 
-                    FROM lottery WHERE MONTH(fdate) = $month ) AS numbers 
-                    GROUP BY number 
-                    ORDER BY counthoi 
-                    DESC LIMIT 6";
+                        FROM (
+                            SELECT number1 AS number FROM lottery WHERE MONTH(fdate) = $month 
+                            UNION ALL 
+                            SELECT number2 AS number FROM lottery WHERE MONTH(fdate) = $month 
+                            UNION ALL 
+                            SELECT number3 AS number FROM lottery WHERE MONTH(fdate) = $month 
+                            UNION ALL 
+                            SELECT number4 AS number FROM lottery WHERE MONTH(fdate) = $month 
+                            UNION ALL 
+                            SELECT number5 AS number FROM lottery WHERE MONTH(fdate) = $month 
+                            UNION ALL 
+                            SELECT number6 AS number FROM lottery WHERE MONTH(fdate) = $month 
+                            UNION ALL 
+                            SELECT bonus AS number FROM lottery WHERE MONTH(fdate) = $month 
+                        ) AS numbers 
+                        GROUP BY number 
+                        ORDER BY counthoi DESC LIMIT 6";
         
-        $rstCount6 = $conn->query($sqlCountB);
-        if ($rstCount6->num_rows > 0) {
-            $rstDict = Array();
-            echo "<div class='underlogomenu'> ";
-            // Output data of each row
-            while ($rowItem = $rstCount6->fetch_assoc()) {
-
-                $countNumber =$rowItem['num'];
-
-                if ($countNumber<= 10) {
-                    $numClass = 'ball_645 lrg ball1';
-                }
-        
-                if ($countNumber > 10 && $countNumber <= 20) {
-                    $numClass = 'ball_645 lrg ball2';
-                }
-        
-                if ($countNumber  > 20 && $countNumber <= 30) {
-                    $numClass = 'ball_645 lrg ball3';
-                }
-        
-                if ($countNumber > 30 && $countNumber <= 40) {
-                    $numClass = 'ball_645 lrg ball4';
-                }
-                
-                if ($countNumber > 40 && $countNumber < 46) {
-                    $numClass = 'ball_645 lrg ball5';
-                }
-
-                echo "<span class='" . $numClass . "'>" . $rowItem['num'] . "</span>";
-            }
-            echo "</div>";
-        }
-
-    ?>
+//        $rstCount6 = $conn->query($sqlCountB);
+//            if ($rstCount6->num_rows > 0) {
+                //echo "<div class='underlogomenu'>";
+//                // 각 행의 데이터를 출력
+//                while ($rowItem = $rstCount6->fetch_assoc()) {
+//                    $countNumber = $rowItem['num'];
+//
+//                    if ($countNumber <= 10) {
+//                        $numClass = 'ball_645 lrg ball1';
+//                    } elseif ($countNumber > 10 && $countNumber <= 20) {
+//                        $numClass = 'ball_645 lrg ball2';
+//                    } elseif ($countNumber > 20 && $countNumber <= 30) {
+//                        $numClass = 'ball_645 lrg ball3';
+//                    } elseif ($countNumber > 30 && $countNumber <= 40) {
+//                        $numClass = 'ball_645 lrg ball4';
+//                    } else {
+//                        $numClass = 'ball_645 lrg ball5';
+//                    }
+//
+//                    echo "<span class='" . $numClass . "'>" . $rowItem['num'] . "</span>";
+//                }
+                //echo "</div>";
+//            }
+        ?>
+    </div>
 
         </div>
     </div>    
@@ -201,242 +258,108 @@
 
     <div>
 <?php
+            $sql = "";
+            if ($month == 0) {
+                if (empty($searchNum)) {
+                    $sql = "SELECT round, fdate, fmdate, number1, number2, number3, number4, number5, number6, bonus
+                        FROM lottery
+                        WHERE 1=1";
+                    if ($day > 0) {
+                        $sql .= " AND DAY(fdate) = $day";
+                    }
+                    $sql .= " ORDER BY fdate DESC";
+                } else {
+                    $sql = "SELECT round, fdate, fmdate, number1, number2, number3, number4, number5, number6, bonus
+                        FROM lottery
+                        WHERE 1=1";
+                    if ($day > 0) {
+                        $sql .= " AND DAY(fdate) = $day";
+                    }
+                    $sql .= " AND ($searchNum IN (number1, number2, number3, number4, number5, number6)) 
+                        ORDER BY fdate DESC";
+                }
+            } else {
+                if (empty($searchNum)) {
+                    $sql = "SELECT round, fdate, fmdate, number1, number2, number3, number4, number5, number6, bonus
+                        FROM lottery
+                        WHERE MONTH(fdate) = $month";
+                    if ($day > 0) {
+                        $sql .= " AND DAY(fdate) = $day";
+                    }
+                    $sql .= " ORDER BY fdate DESC";
+                } else {
+                    $sql = "SELECT round, fdate, fmdate, number1, number2, number3, number4, number5, number6, bonus
+                        FROM lottery
+                        WHERE MONTH(fdate) = $month";
+                    if ($day > 0) {
+                        $sql .= " AND DAY(fdate) = $day";
+                    }
+                    $sql .= " AND ($searchNum IN (number1, number2, number3, number4, number5, number6)) 
+                        ORDER BY fdate DESC";
+                }
+            }
 
-$sql = "";
-if ($month == NULL || $month == "") {
-    // SQL query with LIKE condition
-    if ($searchNum == NULL || $searchNum == "") {
-        $sql = "SELECT fdate, number1, number2, number3, number4, number5, number6, bonus 
-            FROM lottery  
-            WHERE 1=1
-            ORDER BY fdate DESC";
-    } else {
-        $sql = "SELECT fdate, number1, number2, number3, number4, number5, number6, bonus 
-            FROM lottery
-            WHERE 1=1  
-            AND ($searchNum IN (number1, number2, number3, number4, number5, number6)) 
-            ORDER BY fdate DESC";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                echo "<table border='0'>
+                        <tr>
+                            <th>회차</th>
+                            <th>일자</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>+</th>
+                        </tr>";
 
-        $sqlCount = "SELECT COUNT(*) AS result_count, 
-        fdate, 
-        number1, 
-        number2, 
-        number3, 
-        number4, 
-        number5, 
-        number6, 
-        bonus 
-        FROM lottery  
-        WHERE MONTH(fdate) = $month 
-        AND ($searchNum IN (number1, number2, number3, number4, number5, number6)) 
-        ORDER BY fdate DESC";
-    }
-} else {
-    // SQL query with LIKE condition
-    if ($searchNum == NULL || $searchNum == "") {
-        $sql = "SELECT fdate, number1, number2, number3, number4, number5, number6, bonus 
-            FROM lottery  
-            WHERE MONTH(fdate) = $month 
-            ORDER BY fdate DESC";
-    } else {
-        $sql = "SELECT fdate, number1, number2, number3, number4, number5, number6, bonus 
-            FROM lottery  
-            WHERE MONTH(fdate) = $month 
-            AND ($searchNum IN (number1, number2, number3, number4, number5, number6)) 
-            ORDER BY fdate DESC";
-    }
-}
+                while ($row = $result->fetch_assoc()) {
+                    // 각 번호의 색상 클래스 설정
+                    $numClasses = [];
+                    for ($i = 1; $i <= 6; $i++) {
+                        $num = $row["number$i"];
+                        if ($num <= 10) {
+                            $numClasses[$i] = 'ball_645 lrg ball1';
+                        } elseif ($num > 10 && $num <= 20) {
+                            $numClasses[$i] = 'ball_645 lrg ball2';
+                        } elseif ($num > 20 && $num <= 30) {
+                            $numClasses[$i] = 'ball_645 lrg ball3';
+                        } elseif ($num > 30 && $num <= 40) {
+                            $numClasses[$i] = 'ball_645 lrg ball4';
+                        } else {
+                            $numClasses[$i] = 'ball_645 lrg ball5';
+                        }
+                    }
 
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    echo "<table border='0'>
-            <tr>
-                <th>Date</th>
-                <th>No1</th>
-                <th>No2</th>
-                <th>No3</th>
-                <th>No4</th>
-                <th>No5</th>
-                <th>No6</th>
-                <th>Bonus</th>
-            </tr>";
+                    $bonusClass = $row['bonus'] <= 10 ? 'ball_645 lrg ball1' :
+                                  ($row['bonus'] > 10 && $row['bonus'] <= 20 ? 'ball_645 lrg ball2' :
+                                  ($row['bonus'] > 20 && $row['bonus'] <= 30 ? 'ball_645 lrg ball3' :
+                                  ($row['bonus'] > 30 && $row['bonus'] <= 40 ? 'ball_645 lrg ball4' : 'ball_645 lrg ball5')));
 
-            $idx = 0;
-            $resultDict = Array();
-    // Output data of each row
-    while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                            <td>{$row['round']} </td>
+                            <td>{$row['fdate']} <p style='color: gray;'>({$row['fmdate']})<p></td>
+                            <td><span class='{$numClasses[1]}'>{$row['number1']}</span></td>
+                            <td><span class='{$numClasses[2]}'>{$row['number2']}</span></td>
+                            <td><span class='{$numClasses[3]}'>{$row['number3']}</span></td>
+                            <td><span class='{$numClasses[4]}'>{$row['number4']}</span></td>
+                            <td><span class='{$numClasses[5]}'>{$row['number5']}</span></td>
+                            <td><span class='{$numClasses[6]}'>{$row['number6']}</span></td>
+                            <td><span class='$bonusClass'>{$row['bonus']}</span></td>
+                          </tr>";
+                }
 
-        $idx = $idx + 1;
-         //=== 1번째 숫자 색깔 정의
-         if ($row['number1'] <= 10) {
-            $num1Class = 'ball_645 lrg ball1';
-        }
+                echo "</table>";
+            } else {
+                echo "검색 결과 없습니다.";
+            }
 
-        if ($row['number1'] > 10 && $row['number1'] <= 20) {
-            $num1Class = 'ball_645 lrg ball2';
-        }
+            $conn->close();
+        ?>
 
-        if ($row['number1'] > 20 && $row['number1'] <= 30) {
-            $num1Class = 'ball_645 lrg ball3';
-        }
-
-        if ($row['number1'] > 30 && $row['number1'] <= 40) {
-            $num1Class = 'ball_645 lrg ball4';
-        }
-        
-        if ($row['number1'] > 40 && $row['number1'] < 46) {
-            $num1Class = 'ball_645 lrg ball5';
-        }
-
-        //=== 2번째 숫자 색깔 정의
-        if ($row['number2'] <= 10) {
-            $num2Class = 'ball_645 lrg ball1';
-        }
-
-        if ($row['number2'] > 10 && $row['number2'] <= 20) {
-            $num2Class = 'ball_645 lrg ball2';
-        }
-
-        if ($row['number2'] > 20 && $row['number2'] <= 30) {
-            $num2Class = 'ball_645 lrg ball3';
-        }
-
-        if ($row['number2'] > 30 && $row['number2'] <= 40) {
-            $num2Class = 'ball_645 lrg ball4';
-        }
-        
-        if ($row['number2'] > 40 && $row['number2'] < 46) {
-            $num2Class = 'ball_645 lrg ball5';
-        }
-
-        //=== 3번째 숫자 색깔 정의
-        if ($row['number3'] <= 10) {
-            $num3Class = 'ball_645 lrg ball1';
-        }
-
-        if ($row['number3'] > 10 && $row['number3'] <= 20) {
-            $num3Class = 'ball_645 lrg ball2';
-        }
-
-        if ($row['number3'] > 20 && $row['number3'] <= 30) {
-            $num3Class = 'ball_645 lrg ball3';
-        }
-
-        if ($row['number3'] > 30 && $row['number3'] <= 40) {
-            $num3Class = 'ball_645 lrg ball4';
-        }
-        
-        if ($row['number3'] > 40 && $row['number3'] < 46) {
-            $num3Class = 'ball_645 lrg ball5';
-        }
-
-         //=== 4번째 숫자 색깔 정의
-         if ($row['number4'] <= 10) {
-            $num4Class = 'ball_645 lrg ball1';
-        }
-
-        if ($row['number4'] > 10 && $row['number4'] <= 20) {
-            $num4Class = 'ball_645 lrg ball2';
-        }
-
-        if ($row['number4'] > 20 && $row['number4'] <= 30) {
-            $num4Class = 'ball_645 lrg ball3';
-        }
-
-        if ($row['number4'] > 30 && $row['number4'] <= 40) {
-            $num4Class = 'ball_645 lrg ball4';
-        }
-        
-        if ($row['number4'] > 40 && $row['number4'] < 46) {
-            $num4Class = 'ball_645 lrg ball5';
-        }
-
-         //=== 5번째 숫자 색깔 정의
-         if ($row['number5'] <= 10) {
-            $num5Class = 'ball_645 lrg ball1';
-        }
-
-        if ($row['number5'] > 10 && $row['number5'] <= 20) {
-            $num5Class = 'ball_645 lrg ball2';
-        }
-
-        if ($row['number5'] > 20 && $row['number5'] <= 30) {
-            $num5Class = 'ball_645 lrg ball3';
-        }
-
-        if ($row['number5'] > 30 && $row['number5'] <= 40) {
-            $num5Class = 'ball_645 lrg ball4';
-        }
-        
-        if ($row['number5'] > 40 && $row['number5'] < 46) {
-            $num5Class = 'ball_645 lrg ball5';
-        }
-
-        //=== 6번째 숫자 색깔 정의
-        if ($row['number6'] <= 10) {
-            $num6Class = 'ball_645 lrg ball1';
-        }
-
-        if ($row['number6'] > 10 && $row['number6'] <= 20) {
-            $num6Class = 'ball_645 lrg ball2';
-        }
-
-        if ($row['number6'] > 20 && $row['number6'] <= 30) {
-            $num6Class = 'ball_645 lrg ball3';
-        }
-
-        if ($row['number6'] > 30 && $row['number6'] <= 40) {
-            $num6Class = 'ball_645 lrg ball4';
-        }
-        
-        if ($row['number6'] > 40 && $row['number6'] < 46) {
-            $num6Class = 'ball_645 lrg ball5';
-        }
-
-        //=== 보너스 숫자 색깔 정의
-        if ($row['bonus'] <= 10) {
-            $bonusClass = 'ball_645 lrg ball1';
-        }
-
-        if ($row['bonus'] > 10 && $row['bonus'] <= 20) {
-            $bonusClass = 'ball_645 lrg ball2';
-        }
-
-        if ($row['bonus'] > 20 && $row['bonus'] <= 30) {
-            $bonusClass = 'ball_645 lrg ball3';
-        }
-
-        if ($row['bonus'] > 30 && $row['bonus'] <= 40) {
-            $bonusClass = 'ball_645 lrg ball4';
-        }
-        
-        if ($row['bonus'] > 40 && $row['bonus'] <= 46) {
-            $bonusClass = 'ball_645 lrg ball5';
-        }
-
-        echo "<tr>
-                <td>{$row['fdate']}</td>
-                <td><span class='$num1Class'>{$row['number1']}</span></td> 
-                <td><span class='$num2Class'>{$row['number2']}</span></td> 
-                <td><span class='$num3Class'>{$row['number3']}</span></td> 
-                <td><span class='$num4Class'>{$row['number4']}</span></td> 
-                <td><span class='$num5Class'>{$row['number5']}</span></td> 
-                <td><span class='$num6Class'>{$row['number6']}</span></td> 
-                <td><span class='$bonusClass'>{$row['bonus']}</span></td>
-              </tr>";
-    }
-
-    echo "</table>";
-} else {
-    echo "검색 결과 없습니다.";
-}
-
-// Close connection
-$conn->close();
-?>
-
-<div id='caulyDisplay'>
-   <script src='http://image.cauly.co.kr/websdk/common/lasted/ads.min.js'></script>
+<div id="caulyDisplay">
+   <script src="http://image.cauly.co.kr/websdk/common/lasted/ads.min.js"></script>
    <script>
      // Advertiser Id 를 저장하는 메소드
     function saveAdvertiserId(adid) {
@@ -470,9 +393,6 @@ $conn->close();
        success: function () { }
      });
    </script>
-</div>	
-
-</div>
-          
+    </div>
 </body>
 </html>
